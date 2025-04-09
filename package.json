@@ -1,0 +1,20 @@
+{
+  "name": "my-live-server",
+  "version": "1.0.0",
+  "description": "A simple email server using Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mailparser": "^2.8.1",
+    "smtp-server": "^3.13.6"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "keywords": []
+}

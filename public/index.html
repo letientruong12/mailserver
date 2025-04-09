@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Receiver</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Email Receiver</h1>
+        <div>
+            <label for="domain-select">Select Domain:</label>
+            <select id="domain-select">
+                <option value="notepad.online">notepad.online</option>
+                <option value="anotherdomain.com">anotherdomain.com</option>
+                <!-- Thêm các domain khác ở đây -->
+            </select>
+        </div>
+        <div>
+            <label for="email-prefix">Email Prefix:</label>
+            <input type="text" id="email-prefix" placeholder="Enter email prefix (e.g., admin)">
+        </div>
+        <button id="generate-email">Generate Email</button>
+        <div id="email-list"></div>
+        <div id="email-content" class="email-content"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
