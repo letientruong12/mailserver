@@ -49,13 +49,14 @@ server.listen(2525, () => {
 
 
 app.get('/:email', (req, res) => {
-    const email = req.params.email?.toLowerCase(); // Chuyển email về chữ thường
-
-    if (!email || !email.includes('@')) {
-        return res.status(400).json({ error: 'Invalid email format' }); // Kiểm tra định dạng email
+    const email = req.params.email?.toLowerCase();
+    if (!email) {
+        return res.status(400).json({ error: 'Email parameter is missing' });
+    }
+    if (!email.includes('@')) {
+        return res.status(400).json({ error: 'Email must contain @' });
     }
 
-    // Tìm email trong danh sách
     const emailData = emails.find(e => e.to.toLowerCase() === email);
     if (emailData) {
         res.json(emailData);

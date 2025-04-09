@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Clear the email list
             emailListElement.innerHTML = '';
 
+            // Check if the email list is empty
+            if (emails.length === 0) {
+                emailListElement.innerHTML = '<li>No emails found</li>';
+                return;
+            }
+
             // Populate the email list
             emails.forEach(email => {
                 const listItem = document.createElement('li');
@@ -29,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch email content from the server
     async function fetchEmailContent(email) {
+        console.log('Fetching email content for:', email);
         try {
             const response = await fetch(`/${encodeURIComponent(email)}`);
             if (response.ok) {
@@ -44,17 +51,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error fetching email content:', error);
+            emailContentElement.innerHTML = `<p>Error fetching email content</p>`;
         }
     }
 
     // Generate email address
-    generateEmailButton.addEventListener('click', () => {
+    generateEmailButton.addEventListener('click', async () => {
         const prefix = emailPrefixInput.value.trim();
         const domain = domainSelect.value;
 
         if (prefix) {
             const email = `${prefix}@${domain}`;
             alert(`Generated email: ${email}`);
+
+            // Optional: Send email to server
+            try {
+                const response = await fetch('/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                if (response.ok) {
+                    alert('Email sent successfully!');
+                } else {
+                    alert('Failed to send email.');
+                }
+            } catch (error) {
+                console.error('Error sending email:', error);
+            }
         } else {
             alert('Please enter an email prefix.');
         }
