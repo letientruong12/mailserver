@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
     generateEmailButton.addEventListener('click', async () => {
         const prefix = emailPrefixInput.value.trim();
         const domain = domainSelect.value;
-
+    
         if (prefix) {
             const email = `${prefix}@${domain}`;
             alert(`Generated email: ${email}`);
-
-            // Optional: Send email to server
+    
+            // Gửi email đến server
             try {
                 const response = await fetch('/send-email', {
                     method: 'POST',
@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (response.ok) {
                     alert('Email sent successfully!');
+                    // Refresh email list
+                    fetchEmailList();
                 } else {
                     alert('Failed to send email.');
                 }

@@ -9,24 +9,35 @@
 <body>
     <div class="container">
         <h1>Email Receiver</h1>
-        <div>
-            <label for="domain-select">Select Domain:</label>
-            <select id="domain-select">
-                <option value="glts.vn">glts.vn</option>
-                <option value="anotherdomain.com">anotherdomain.com</option>
-                <!-- Thêm các domain khác ở đây -->
-            </select>
-        </div>
+
+        <!-- Form để tạo email -->
         <div>
             <label for="email-prefix">Email Prefix:</label>
             <input type="text" id="email-prefix" placeholder="Enter email prefix (e.g., admin)">
         </div>
+        <div>
+            <label for="domain-select">Select Domain:</label>
+            <select id="domain-select">
+                <option value="glts.vn">glts.vn</option>
+                <option value="example.com">example.com</option>
+                <!-- Thêm các domain khác nếu cần -->
+            </select>
+        </div>
         <button id="generate-email">Generate Email</button>
+
+        <!-- Danh sách email -->
         <h2>Email List</h2>
-        <ul id="email-list"></ul>
+        <ul id="email-list">
+            <!-- Danh sách email sẽ được thêm động -->
+        </ul>
+
+        <!-- Nội dung email -->
         <h2>Email Content</h2>
-        <div id="email-content" class="email-content"></div>
+        <div id="email-content" class="email-content">
+            <!-- Nội dung email sẽ được hiển thị ở đây -->
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

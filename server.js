@@ -83,3 +83,22 @@ app.get('/emails', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Web server is running on port ${PORT}`);
 });
+
+// Endpoint để nhận email từ client
+app.post('/send-email', express.json(), (req, res) => {
+    const { email } = req.body;
+
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Giả lập việc lưu email vào danh sách
+    emails.push({
+        to: email,
+        subject: 'Generated Email',
+        content: 'This is a generated email content.'
+    });
+
+    console.log('Email added:', email);
+    res.status(200).json({ message: 'Email added successfully' });
+});
