@@ -4,7 +4,7 @@ const { simpleParser } = require('mailparser');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Sử dụng PORT từ biến môi trường
 
 // Giả lập dữ liệu email
 let emails = [];
@@ -35,11 +35,11 @@ const server = new SMTPServer({
 });
 
 // Chạy server SMTP
-server.listen(25, () => {
-    console.log('SMTP Server is running on port 25');
+// Thay đổi cổng ở đây
+server.listen(0, () => { // Có thể sử dụng cổng bất kỳ cho SMTP
+    console.log('SMTP Server is running');
 });
 
-// Đường dẫn để lấy email theo địa chỉ
 app.get('/:email', (req, res) => {
     const email = req.params.email;
 
