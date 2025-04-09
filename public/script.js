@@ -1,52 +1,65 @@
-const emailList = document.getElementById('email-list');
-const domainSelect = document.getElementById('domain-select');
-const emailPrefixInput = document.getElementById('email-prefix');
-const generateEmailButton = document.getElementById('generate-email');
-const emailContent = document.getElementById('email-content');
+document.addEventListener('DOMContentLoaded', () => {
+    const emailListElement = document.getElementById('email-list');
+    const emailContentElement = document.getElementById('email-content');
+    const generateEmailButton = document.getElementById('generate-email');
+    const emailPrefixInput = document.getElementById('email-prefix');
+    const domainSelect = document.getElementById('domain-select');
 
-// Hàm để thêm email vào danh sách
-function addEmailToList(email, content) {
-    const emailItem = document.createElement('div');
-    emailItem.className = 'email-item';
-    emailItem.textContent = email;
+    // Fetch email list from the server
+    async function fetchEmailList() {
+        try {
+            const response = await fetch('/emails');
+            const emails = await response.json();
 
-    // Tạo nút sao chép
-    const copyButton = document.createElement('button');
-    copyButton.className = 'copy-button';
-    copyButton.textContent = 'Copy';
-    copyButton.onclick = (e) => {
-        e.stopPropagation(); // Ngăn chặn sự kiện click trên email item
-        navigator.clipboard.writeText(email)
-            .then(() => {
-                alert('Email copied to clipboard!');
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
+            // Clear the email list
+            emailListElement.innerHTML = '';
+
+            // Populate the email list
+            emails.forEach(email => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${email.to} - ${email.subject}`;
+                listItem.dataset.email = email.to;
+                listItem.addEventListener('click', () => fetchEmailContent(email.to));
+                emailListElement.appendChild(listItem);
             });
-    };
-
-    // Khi click vào email item, hiển thị nội dung email
-    emailItem.onclick = () => {
-        emailContent.textContent = content; // Hiển thị nội dung email
-    };
-
-    emailItem.appendChild(copyButton);
-    emailList.appendChild(emailItem);
-}
-
-// Hàm để tạo địa chỉ email
-function generateEmail() {
-    const selectedDomain = domainSelect.value;
-    const emailPrefix = emailPrefixInput.value.trim();
-    
-    if (emailPrefix) {
-        const email = `${emailPrefix}@${selectedDomain}`;
-        const fakeContent = `chưa nhận được email ${email}.`; // Giả lập nội dung email
-        addEmailToList(email, fakeContent);
-    } else {
-        alert('Please enter a valid email prefix.');
+        } catch (error) {
+            console.error('Error fetching email list:', error);
+        }
     }
-}
 
-// Thêm sự kiện cho nút tạo email
-generateEmailButton.addEventListener('click', generateEmail);
+    // Fetch email content from the server
+    async function fetchEmailContent(email) {
+        try {
+            const response = await fetch(`/${encodeURIComponent(email)}`);
+            if (response.ok) {
+                const emailData = await response.json();
+                emailContentElement.innerHTML = `
+                    <p><strong>To:</strong> ${emailData.to}</p>
+                    <p><strong>Subject:</strong> ${emailData.subject}</p>
+                    <p><strong>Content:</strong></p>
+                    <p>${emailData.content}</p>
+                `;
+            } else {
+                emailContentElement.innerHTML = `<p>Error: ${response.statusText}</p>`;
+            }
+        } catch (error) {
+            console.error('Error fetching email content:', error);
+        }
+    }
+
+    // Generate email address
+    generateEmailButton.addEventListener('click', () => {
+        const prefix = emailPrefixInput.value.trim();
+        const domain = domainSelect.value;
+
+        if (prefix) {
+            const email = `${prefix}@${domain}`;
+            alert(`Generated email: ${email}`);
+        } else {
+            alert('Please enter an email prefix.');
+        }
+    });
+
+    // Initial fetch of email list
+    fetchEmailList();
+});
