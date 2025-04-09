@@ -16,15 +16,18 @@ const server = new SMTPServer({
     onData(stream, session, callback) {
         simpleParser(stream, (err, mail) => {
             if (err) {
-                console.error(err);
-                return callback(err);
+                console.error('Error parsing email:', err);
+                return callback(new Error('Failed to parse email'));
             }
+            if (!session.envelope.rcptTo || session.envelope.rcptTo.length === 0) {
+                return callback(new Error('No recipient found'));
+            }
+            const recipient = session.envelope.rcptTo[0]?.address || 'unknown';
             console.log('Email received:', mail.subject);
-            // Lưu email vào danh sách
             emails.push({
-                to: session.envelope.rcptTo[0],
-                subject: mail.subject,
-                content: mail.text || mail.html || 'No content' // Lưu nội dung email
+                to: recipient,
+                subject: mail.subject || 'No subject',
+                content: mail.text || mail.html || 'No content'
             });
             callback(null, 'Message accepted');
         });
@@ -40,24 +43,7 @@ server.listen(0, () => {
     console.log(`SMTP Server is running on port ${server.server.address().port}`);
 });
 
-onData(stream, session, callback) {
-    simpleParser(stream, (err, mail) => {
-        if (err) {
-            console.error('Error parsing email:', err);
-            return callback(new Error('Failed to parse email'));
-        }
-        if (!session.envelope.rcptTo || session.envelope.rcptTo.length === 0) {
-            return callback(new Error('No recipient found'));
-        }
-        console.log('Email received:', mail.subject);
-        emails.push({
-            to: session.envelope.rcptTo[0],
-            subject: mail.subject || 'No subject',
-            content: mail.text || mail.html || 'No content'
-        });
-        callback(null, 'Message accepted');
-    });
-}
+
 
 
 app.get('/:email', (req, res) => {
