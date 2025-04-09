@@ -72,7 +72,14 @@ app.get('/', (req, res) => {
     });
 });
 
+app.get('/emails', (req, res) => {
+    res.json(emails);
+});
+
 // Chạy server Express
 app.listen(PORT, () => {
     console.log(`Web server is running on port ${PORT}`);
 });
+
+console.log('Email received:', mail.subject);
+console.log('Email content:', mail.text || mail.html || 'No content');
