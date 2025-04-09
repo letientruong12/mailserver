@@ -24,7 +24,7 @@ const server = new SMTPServer({
             emails.push({
                 to: session.envelope.rcptTo[0],
                 subject: mail.subject,
-                content: mail.text || mail.html || 'No content'
+                content: mail.text || mail.html || 'No content' // Lưu nội dung email
             });
             callback(null, 'Message accepted');
         });
@@ -50,6 +50,10 @@ app.get('/:email', (req, res) => {
     } else {
         res.status(404).json({ error: 'Email not found' });
     }
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Chạy server Express

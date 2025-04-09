@@ -41,7 +41,7 @@ function generateEmail() {
     
     if (emailPrefix) {
         const email = `${emailPrefix}@${selectedDomain}`;
-        const fakeContent = `This is a fake email content for ${email}.`; // Giả lập nội dung email
+        const fakeContent = `chưa nhận được email ${email}.`; // Giả lập nội dung email
         addEmailToList(email, fakeContent);
     } else {
         alert('Please enter a valid email prefix.');
