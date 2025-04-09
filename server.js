@@ -42,7 +42,7 @@ const server = new SMTPServer({
 
 // Chạy server SMTP
 // Thay đổi cổng ở đây
-server.listen(2525, () => {
+server.listen(25, () => {
     console.log(`SMTP Server is running on port 2525`);
 });
 
