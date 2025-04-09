@@ -14,12 +14,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const server = new SMTPServer({
     onData(stream, session, callback) {
+        console.log('Receiving email...');
         simpleParser(stream, (err, mail) => {
             if (err) {
                 console.error('Error parsing email:', err);
                 return callback(new Error('Failed to parse email'));
             }
             if (!session.envelope.rcptTo || session.envelope.rcptTo.length === 0) {
+                console.error('No recipient found');
                 return callback(new Error('No recipient found'));
             }
             const recipient = session.envelope.rcptTo[0]?.address || 'unknown';
@@ -29,6 +31,7 @@ const server = new SMTPServer({
                 subject: mail.subject || 'No subject',
                 content: mail.text || mail.html || 'No content'
             });
+            console.log('Email saved:', emails[emails.length - 1]);
             callback(null, 'Message accepted');
         });
     },
@@ -39,10 +42,9 @@ const server = new SMTPServer({
 
 // Chạy server SMTP
 // Thay đổi cổng ở đây
-server.listen(0, () => {
-    console.log(`SMTP Server is running on port ${server.server.address().port}`);
+server.listen(2525, () => {
+    console.log(`SMTP Server is running on port 2525`);
 });
-
 
 
 
