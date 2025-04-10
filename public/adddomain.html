@@ -19,7 +19,20 @@
         </div>
         <div id="domain-output" class="output"></div>
     </div>
+    <footer class="footer">
+        <p>Copyright <a href="https://t.me/vin_8379" target="_blank">Dev Lỏ</a></p>
+    </footer>
     <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+            }
+        });
+
+        // Chặn context menu (click chuột phải) - tùy chọn
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
         document.getElementById('add-domain').addEventListener('click', function () {
             const domain = document.getElementById('new-domain').value.trim();
             if (!domain) {

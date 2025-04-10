@@ -24,8 +24,21 @@
         </div>
         <div id="email-output" class="output"></div>
     </div>
+    <footer class="footer">
+        <p>Copyright <a href="https://t.me/vin_8379" target="_blank">Dev Lỏ</a></p>
+    </footer>
     <script src="script.js"></script>
     <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+            }
+        });
+
+        // Chặn context menu (click chuột phải) - tùy chọn
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
         // Tải danh sách domain khi trang được load
         fetch('http://51.79.192.91:3000/domains')
             .then(response => {
