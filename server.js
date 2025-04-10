@@ -2,11 +2,7 @@ const express = require('express');
 const { SMTPServer } = require('smtp-server');
 const { simpleParser } = require('mailparser');
 const path = require('path');
-const cors = require('cors'); // Thêm gói cors
-
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
+const cors = require('cors'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
