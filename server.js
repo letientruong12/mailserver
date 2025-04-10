@@ -52,7 +52,7 @@ server.listen(25, () => {
 
 
 app.get('/:email', (req, res) => {
-    const email = req.params.email?.toLowerCase();
+    const email = req.params.email ? req.params.email.toLowerCase() : null; // Sửa ở đây
     if (!email) {
         return res.status(400).json({ error: 'Email parameter is missing' });
     }
