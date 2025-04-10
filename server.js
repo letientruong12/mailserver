@@ -24,7 +24,10 @@ const server = new SMTPServer({
                 console.error('No recipient found');
                 return callback(new Error('No recipient found'));
             }
-            const recipient = session.envelope.rcptTo[0]?.address || 'unknown';
+            let recipient = 'unknown'; // Mặc định là 'unknown'
+            if (session.envelope.rcptTo && session.envelope.rcptTo.length > 0) {
+                recipient = session.envelope.rcptTo[0].address; // Sửa ở đây
+            }
             console.log('Email received:', mail.subject);
             emails.push({
                 to: recipient,
