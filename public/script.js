@@ -42,20 +42,19 @@ document.getElementById('check-email').addEventListener('click', function () {
     const email = `${prefix}@${domain}`;
     document.getElementById('email-output').innerHTML = '<p>Đang kiểm tra...</p>';
 
-    fetch(`https://51.79.192.91:3000/${email}`, {
+    fetch(`http://51.79.192.91:3000/${email}`, {
         method: 'GET',
         credentials: 'same-origin'
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Không tìm thấy email');
+                throw new Error(`Lỗi server: ${response.status} - ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
             const outputDiv = document.getElementById('email-output');
-            outputDiv.innerHTML = ''; // Xóa nội dung cũ
-
+            outputDiv.innerHTML = '';
             if (Array.isArray(data) && data.length > 0) {
                 data.forEach((emailItem, index) => {
                     const emailBox = document.createElement('div');
@@ -73,6 +72,7 @@ document.getElementById('check-email').addEventListener('click', function () {
             }
         })
         .catch(error => {
-            document.getElementById('email-output').innerHTML = `<p>${error.message}</p>`;
+            console.error('Chi tiết lỗi fetch:', error);
+            document.getElementById('email-output').innerHTML = `<p>Lỗi: ${error.message}</p>`;
         });
 });
