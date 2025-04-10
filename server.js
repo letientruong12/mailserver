@@ -68,14 +68,21 @@ app.get('/:email', (req, res) => {
     }
 });
 
-app.get('/', (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'index.html');
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            console.error('Error sending index.html:', err);
-            res.status(500).send('Internal Server Error');
-        }
-    });
+app.get('/:email', (req, res) => {
+    const email = req.params.email ? req.params.email.toLowerCase() : null; // Sửa ở đây
+    if (!email) {
+        return res.status(400).json({ error: 'Email parameter is missing' });
+    }
+    if (!email.includes('@')) {
+        return res.status(400).json({ error: 'Email must contain @' });
+    }
+
+    const emailData = emails.find(e => e.to.toLowerCase() === email);
+    if (emailData) {
+        res.json(emailData);
+    } else {
+        res.status(404).json({ error: 'Email not found' });
+    }
 });
 
 app.get('/emails', (req, res) => {
