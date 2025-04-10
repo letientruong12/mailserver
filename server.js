@@ -54,6 +54,11 @@ server.listen(25, () => {
     console.log('SMTP Server đang chạy trên cổng 25');
 });
 
+app.get('/domains', (req, res) => {
+    res.json(domains);
+});
+
+
 // Đường dẫn để lấy email theo địa chỉ
 app.get('/:email', (req, res) => {
     const email = req.params.email.toLowerCase();
@@ -66,9 +71,7 @@ app.get('/:email', (req, res) => {
 });
 
 
-app.get('/domains', (req, res) => {
-    res.json(domains);
-});
+
 
 // Thêm domain mới
 app.post('/add-domain', (req, res) => {
@@ -79,6 +82,7 @@ app.post('/add-domain', (req, res) => {
     domains.push(domain);
     res.json({ message: `Đã thêm domain: ${domain}` });
 });
+
 
 app.listen(PORT, () => {
     console.log(`Web server đang chạy trên cổng ${PORT}`);
