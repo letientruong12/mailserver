@@ -9,22 +9,26 @@
 <body>
     <div class="container">
         <h1>Email Receiver</h1>
-        <div>
+        <div class="input-group">
             <label for="email-prefix">Email Prefix:</label>
-            <input type="text" id="email-prefix" placeholder="Enter email prefix (e.g., admin)">
+            <input type="text" id="email-prefix" placeholder="e.g., admin" required>
         </div>
-        <div>
+        <div class="input-group">
             <label for="domain-select">Select Domain:</label>
             <select id="domain-select">
                 <option value="alexsonder.art">alexsonder.art</option>
                 <option value="notepad.online">notepad.online</option>
                 <option value="anotherdomain.com">anotherdomain.com</option>
-                <!-- Thêm các domain khác ở đây -->
+                <option value="example.com">example.com</option>
+                <option value="mydomain.net">mydomain.net</option>
+                <!-- Thêm các domain khác ở đây nếu cần -->
             </select>
         </div>
-        <button id="copy-email">Copy Email</button>
-        <button id="check-email">Check Email</button>
-        <div id="email-output"></div>
+        <div class="button-group">
+            <button id="copy-email">Copy Email</button>
+            <button id="check-email">Check Email</button>
+        </div>
+        <div id="email-output" class="output"></div>
     </div>
     <script src="script.js"></script>
 </body>
