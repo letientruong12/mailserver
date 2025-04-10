@@ -24,11 +24,8 @@ const server = new SMTPServer({
                 console.error('No recipient found');
                 return callback(new Error('No recipient found'));
             }
-            let recipient = 'unknown'; // Mặc định là 'unknown'
-            if (session.envelope.rcptTo && session.envelope.rcptTo.length > 0) {
-                recipient = session.envelope.rcptTo[0].address; // Sửa ở đây
-            }
-            console.log('Email received:', mail.subject);
+            let recipient = session.envelope.rcptTo[0].address; // Lấy địa chỉ email
+            console.log('Email received for:', recipient);
             emails.push({
                 to: recipient,
                 subject: mail.subject || 'No subject',
@@ -44,71 +41,22 @@ const server = new SMTPServer({
 });
 
 // Chạy server SMTP
-// Thay đổi cổng ở đây
 server.listen(25, () => {
-    console.log(`SMTP Server is running on port 2525`);
+    console.log('SMTP Server is running on port 25');
 });
 
-
-
+// Đường dẫn để lấy email theo địa chỉ
 app.get('/:email', (req, res) => {
-    const email = req.params.email ? req.params.email.toLowerCase() : null; // Sửa ở đây
-    if (!email) {
-        return res.status(400).json({ error: 'Email parameter is missing' });
-    }
-    if (!email.includes('@')) {
-        return res.status(400).json({ error: 'Email must contain @' });
-    }
-
+    const email = req.params.email.toLowerCase();
     const emailData = emails.find(e => e.to.toLowerCase() === email);
     if (emailData) {
         res.json(emailData);
     } else {
         res.status(404).json({ error: 'Email not found' });
     }
-});
-
-app.get('/:email', (req, res) => {
-    const email = req.params.email ? req.params.email.toLowerCase() : null; // Sửa ở đây
-    if (!email) {
-        return res.status(400).json({ error: 'Email parameter is missing' });
-    }
-    if (!email.includes('@')) {
-        return res.status(400).json({ error: 'Email must contain @' });
-    }
-
-    const emailData = emails.find(e => e.to.toLowerCase() === email);
-    if (emailData) {
-        res.json(emailData);
-    } else {
-        res.status(404).json({ error: 'Email not found' });
-    }
-});
-
-app.get('/emails', (req, res) => {
-    res.json(emails);
 });
 
 // Chạy server Express
 app.listen(PORT, () => {
     console.log(`Web server is running on port ${PORT}`);
-});
-
-// Endpoint để nhận email từ client
-app.post('/send-email', express.json(), (req, res) => {
-    const { email } = req.body;
-
-    if (!email || !email.includes('@')) {
-        return res.status(400).json({ error: 'Invalid email format' });
-    }
-
-    // Giả lập việc lưu email vào danh sách
-    emails.push({
-        to: email,
-        subject: 'Generated Email',
-        content: 'This is a generated email content.'
-    });
-
-    console.log('Email added:', email);
-    res.status(200).json({ message: 'Email added successfully' });
 });

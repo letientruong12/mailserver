@@ -22,43 +22,26 @@ label {
     margin-right: 10px;
 }
 
-select, input {
-    margin-bottom: 20px;
+input, select {
     width: calc(100% - 20px);
     padding: 10px;
+    margin-bottom: 10px;
 }
 
-.email-item {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-    position: relative;
-    cursor: pointer; /* Thay đổi con trỏ khi hover */
-}
-
-.email-item:hover {
-    background-color: #f0f0f0; /* Thay đổi màu nền khi hover */
-}
-
-.copy-button {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    background: #28a745;
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
     color: white;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.copy-button:hover {
-    background: #218838;
+button:hover {
+    background-color: #218838;
 }
 
-.email-content {
+#email-output {
     margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
 }
