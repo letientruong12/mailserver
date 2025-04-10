@@ -8,7 +8,6 @@ document.getElementById('copy-email').addEventListener('click', function () {
     }
     const email = `${prefix}@${domain}`;
 
-    // Kiểm tra và sao chép email vào clipboard
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(email).then(() => {
             alert(`Đã sao chép email: ${email}`);
@@ -17,7 +16,6 @@ document.getElementById('copy-email').addEventListener('click', function () {
             alert('Sao chép thất bại, vui lòng thử lại!');
         });
     } else {
-        // Phương thức dự phòng nếu clipboard không khả dụng
         const tempInput = document.createElement('input');
         tempInput.value = email;
         document.body.appendChild(tempInput);
@@ -44,9 +42,9 @@ document.getElementById('check-email').addEventListener('click', function () {
     const email = `${prefix}@${domain}`;
     document.getElementById('email-output').innerHTML = '<p>Đang kiểm tra...</p>';
 
-    fetch(`http://51.79.192.91:3000/${email}`, { 
+    fetch(`https://51.79.192.91:3000/${email}`, {
         method: 'GET',
-        credentials: 'same-origin' // Đảm bảo gửi cookie nếu cần
+        credentials: 'same-origin'
     })
         .then(response => {
             if (!response.ok) {
@@ -55,12 +53,24 @@ document.getElementById('check-email').addEventListener('click', function () {
             return response.json();
         })
         .then(data => {
-            document.getElementById('email-output').innerHTML = `
-                <h2>Thông tin email:</h2>
-                <p><strong>Tới:</strong> ${data.to}</p>
-                <p><strong>Tiêu đề:</strong> ${data.subject}</p>
-                <p><strong>Nội dung:</strong> ${data.content}</p>
-            `;
+            const outputDiv = document.getElementById('email-output');
+            outputDiv.innerHTML = ''; // Xóa nội dung cũ
+
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach((emailItem, index) => {
+                    const emailBox = document.createElement('div');
+                    emailBox.className = 'email-box';
+                    emailBox.innerHTML = `
+                        <h2>Email ${index + 1}</h2>
+                        <p><strong>Tới:</strong> ${emailItem.to}</p>
+                        <p><strong>Tiêu đề:</strong> ${emailItem.subject}</p>
+                        <p><strong>Nội dung:</strong> ${emailItem.content}</p>
+                    `;
+                    outputDiv.appendChild(emailBox);
+                });
+            } else {
+                outputDiv.innerHTML = '<p>Không có email nào được tìm thấy.</p>';
+            }
         })
         .catch(error => {
             document.getElementById('email-output').innerHTML = `<p>${error.message}</p>`;

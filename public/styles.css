@@ -22,14 +22,14 @@ body {
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 700px; /* Tăng chiều rộng container */
+    max-width: 700px;
 }
 
 .main-title {
     text-align: center;
     color: #2c3e50;
     margin-bottom: 30px;
-    font-size: 32px; /* Tăng kích thước chữ tiêu đề */
+    font-size: 32px;
     font-weight: 700;
 }
 
@@ -42,17 +42,17 @@ body {
     display: block;
     margin-bottom: 8px;
     color: #34495e;
-    font-size: 18px; /* Tăng kích thước chữ label */
+    font-size: 18px;
     font-weight: 600;
 }
 
 .input-group input,
 .input-group select {
     width: 100%;
-    padding: 12px; /* Tăng padding cho input/select */
+    padding: 12px;
     border: 2px solid #dfe6e9;
     border-radius: 8px;
-    font-size: 16px; /* Tăng kích thước chữ trong input */
+    font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;
 }
@@ -72,10 +72,10 @@ body {
 
 button, .button {
     flex: 1;
-    padding: 14px; /* Tăng kích thước button */
+    padding: 14px;
     border: none;
     border-radius: 8px;
-    font-size: 18px; /* Tăng kích thước chữ button */
+    font-size: 18px;
     font-weight: 500;
     cursor: pointer;
     text-align: center;
@@ -112,41 +112,34 @@ button:hover, .button:hover {
     background-color: #6c757d;
 }
 
-/* Hộp thư */
+/* Khu vực hiển thị email */
+#email-output {
+    max-height: 600px; /* Tăng chiều cao tối đa */
+    overflow-y: auto; /* Thanh cuộn dọc */
+}
+
 .email-box {
     padding: 20px;
     background-color: #f9fbfd;
     border: 2px solid #dfe6e9;
     border-radius: 8px;
-    min-height: 200px; /* Tăng chiều cao tối thiểu */
-    max-height: 400px; /* Giới hạn chiều cao, thêm cuộn nếu cần */
-    overflow-y: auto; /* Thêm thanh cuộn dọc */
-    font-size: 16px; /* Tăng kích thước chữ trong hộp thư */
+    margin-bottom: 20px; /* Khoảng cách giữa các email-box */
+    font-size: 16px;
     color: #2c3e50;
 }
 
 .email-box h2 {
-    font-size: 22px; /* Tăng kích thước tiêu đề email */
+    font-size: 22px;
     margin-bottom: 15px;
     color: #3498db;
 }
 
-.email-item {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #dfe6e9;
-}
-
-.email-item:last-child {
-    border-bottom: none;
-}
-
-.email-item p {
+.email-box p {
     margin-bottom: 8px;
     line-height: 1.5;
 }
 
-.email-item strong {
+.email-box strong {
     color: #34495e;
 }
 
@@ -155,7 +148,7 @@ button:hover, .button:hover {
     text-align: center;
     padding: 20px 0;
     color: #7f8c8d;
-    font-size: 16px; /* Tăng kích thước chữ footer */
+    font-size: 16px;
 }
 
 .footer a {

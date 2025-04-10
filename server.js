@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 // Dữ liệu giả lập
 let emails = [];
-let domains = ['glts.vn', 'notepad.online', 'anotherdomain.com']; // Domain mặc định
+let domains = ['glts.vn']; // Domain mặc định
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -68,8 +68,8 @@ app.get('/domains', (req, res) => {
 // Đường dẫn để lấy email theo địa chỉ
 app.get('/:email', (req, res) => {
     const email = req.params.email.toLowerCase();
-    const emailData = emails.find(e => e.to.toLowerCase() === email);
-    if (emailData) {
+    const emailData = emails.filter(e => e.to.toLowerCase() === email);
+    if (emailData.length > 0) {
         res.json(emailData);
     } else {
         res.status(404).json({ error: 'Không tìm thấy email' });
