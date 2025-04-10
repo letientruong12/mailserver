@@ -4,26 +4,25 @@ const { simpleParser } = require('mailparser');
 const path = require('path');
 const cors = require('cors'); // Thêm gói cors
 
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Giả lập dữ liệu email
+// Dữ liệu giả lập
 let emails = [];
 let domains = ['glts.vn', 'notepad.online', 'anotherdomain.com']; // Domain mặc định
 
-
-// Middleware để phục vụ tệp tĩnh từ thư mục 'public'
+// Middleware
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Thêm middleware CORS
-app.use(cors({
-    origin: 'http://51.79.192.91:3000', // Cho phép origin cụ thể
-    // origin: '*', // Hoặc dùng '*' để cho phép tất cả origin (không khuyến khích cho production)
-    methods: ['GET'], // Chỉ cho phép GET
-    allowedHeaders: ['Content-Type']
-}));
-
 app.use(express.json());
+app.use(cors({
+    origin: 'http://51.79.192.91:3000', // Origin của giao diện
+    methods: ['GET', 'POST'],          // Cho phép cả GET và POST
+    allowedHeaders: ['Content-Type']   // Hỗ trợ header cho POST JSON
+}));
 
 
 
@@ -51,7 +50,7 @@ const server = new SMTPServer({
             callback(null, 'Tin nhắn được chấp nhận');
         });
     },
-    authOptional: true // Tạm thời bỏ xác thực để dễ kiểm tra
+    authOptional: true
 });
 
 // Chạy server SMTP trên cổng 25
@@ -70,10 +69,6 @@ app.get('/:email', (req, res) => {
     }
 });
 
-// Chạy server Express
-app.listen(PORT, () => {
-    console.log(`Web server đang chạy trên cổng ${PORT}`);
-});
 
 app.get('/domains', (req, res) => {
     res.json(domains);
