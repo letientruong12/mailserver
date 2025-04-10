@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Domain</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Domain</h1>
+        <div class="input-group">
+            <label for="new-domain">Domain:</label>
+            <input type="text" id="new-domain" placeholder="e.g., mydomain.com" required>
+        </div>
+        <div class="button-group">
+            <button id="add-domain">Add Domain</button>
+            <a href="/" class="button">Back to Email Receiver</a>
+        </div>
+        <div id="domain-output" class="output"></div>
+    </div>
+    <script>
+        document.getElementById('add-domain').addEventListener('click', function () {
+            const domain = document.getElementById('new-domain').value.trim();
+            if (!domain) {
+                alert('Vui lòng nhập domain!');
+                return;
+            }
+
+            fetch('http://51.79.192.91:3000/add-domain', { // Cập nhật URL theo server
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ domain })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('domain-output').innerHTML = `<p>${data.message}</p>`;
+                    document.getElementById('new-domain').value = ''; // Xóa ô nhập sau khi thêm
+                })
+                .catch(error => {
+                    document.getElementById('domain-output').innerHTML = `<p>Lỗi: ${error.message}</p>`;
+                });
+        });
+    </script>
+</body>
+</html>

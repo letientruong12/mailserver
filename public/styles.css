@@ -124,3 +124,21 @@ button {
         gap: 10px;
     }
 }
+
+.button {
+    display: inline-block;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #6c757d; /* Màu xám cho nút Add Domain */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #5a6268;
+}

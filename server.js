@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 // Giả lập dữ liệu email
 let emails = [];
+let domains = ['glts.vn', 'notepad.online', 'anotherdomain.com']; // Domain mặc định
+
 
 // Middleware để phục vụ tệp tĩnh từ thư mục 'public'
 app.use(express.static(path.join(__dirname, 'public')));
@@ -20,6 +22,10 @@ app.use(cors({
     methods: ['GET'], // Chỉ cho phép GET
     allowedHeaders: ['Content-Type']
 }));
+
+app.use(express.json());
+
+
 
 // Tạo server SMTP
 const server = new SMTPServer({
@@ -65,6 +71,24 @@ app.get('/:email', (req, res) => {
 });
 
 // Chạy server Express
+app.listen(PORT, () => {
+    console.log(`Web server đang chạy trên cổng ${PORT}`);
+});
+
+app.get('/domains', (req, res) => {
+    res.json(domains);
+});
+
+// Thêm domain mới
+app.post('/add-domain', (req, res) => {
+    const { domain } = req.body;
+    if (!domain || typeof domain !== 'string' || domains.includes(domain)) {
+        return res.status(400).json({ message: 'Domain không hợp lệ hoặc đã tồn tại' });
+    }
+    domains.push(domain);
+    res.json({ message: `Đã thêm domain: ${domain}` });
+});
+
 app.listen(PORT, () => {
     console.log(`Web server đang chạy trên cổng ${PORT}`);
 });
