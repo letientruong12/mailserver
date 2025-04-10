@@ -36,7 +36,15 @@ const server = new SMTPServer({
         });
     },
     onAuth(auth, session, callback) {
-        callback(null, { user: auth.username });
+        // Kiểm tra thông tin xác thực
+        const validUser = 'admin'; // Tên người dùng hợp lệ
+        const validPass = '121299vnN@'; // Mật khẩu hợp lệ
+
+        if (auth.username === validUser && auth.password === validPass) {
+            callback(null, { user: auth.username });
+        } else {
+            callback(new Error('Invalid username or password'));
+        }
     }
 });
 
