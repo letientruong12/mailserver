@@ -2,6 +2,7 @@ const express = require('express');
 const { SMTPServer } = require('smtp-server');
 const { simpleParser } = require('mailparser');
 const path = require('path');
+const cors = require('cors'); // Thêm gói cors
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,14 @@ let emails = [];
 
 // Middleware để phục vụ tệp tĩnh từ thư mục 'public'
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Thêm middleware CORS
+app.use(cors({
+    origin: 'http://51.79.192.91:3000', // Cho phép origin cụ thể
+    // origin: '*', // Hoặc dùng '*' để cho phép tất cả origin (không khuyến khích cho production)
+    methods: ['GET'], // Chỉ cho phép GET
+    allowedHeaders: ['Content-Type']
+}));
 
 // Tạo server SMTP
 const server = new SMTPServer({
