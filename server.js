@@ -49,6 +49,12 @@ const server = new SMTPServer({
     authOptional: true
 });
 
+server.on('error', (err) => {
+    console.error('Lỗi SMTP Server:', err.message, 'từ IP:', err.remote);
+    // Không cần làm gì thêm, server sẽ tiếp tục chạy
+});
+
+
 // Chạy server SMTP trên cổng 25
 server.listen(25, () => {
     console.log('SMTP Server đang chạy trên cổng 25');
