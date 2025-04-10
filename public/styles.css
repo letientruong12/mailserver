@@ -6,155 +6,177 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f0f2f5;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    padding: 30px;
 }
 
 /* Container chính */
 .container {
     background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 500px;
+    max-width: 700px; /* Tăng chiều rộng container */
 }
 
-h1 {
+.main-title {
     text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 32px; /* Tăng kích thước chữ tiêu đề */
+    font-weight: 700;
 }
 
 /* Nhóm input */
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #555;
-    font-weight: bold;
+    margin-bottom: 8px;
+    color: #34495e;
+    font-size: 18px; /* Tăng kích thước chữ label */
+    font-weight: 600;
 }
 
 .input-group input,
 .input-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 12px; /* Tăng padding cho input/select */
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 16px; /* Tăng kích thước chữ trong input */
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s ease;
 }
 
 .input-group input:focus,
 .input-group select:focus {
-    border-color: #007bff;
+    border-color: #3498db;
 }
 
 /* Nhóm button */
 .button-group {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
-button {
+button, .button {
     flex: 1;
-    padding: 10px;
+    padding: 14px; /* Tăng kích thước button */
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 18px; /* Tăng kích thước chữ button */
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover, .button:hover {
+    transform: translateY(-2px);
 }
 
 #copy-email {
-    background-color: #28a745;
-    color: white;
+    background-color: #2ecc71;
 }
 
 #copy-email:hover {
-    background-color: #218838;
+    background-color: #27ae60;
 }
 
 #check-email {
-    background-color: #007bff;
-    color: white;
+    background-color: #3498db;
 }
 
 #check-email:hover {
-    background-color: #0069d9;
-}
-
-/* Khu vực hiển thị kết quả */
-.output {
-    padding: 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    min-height: 100px;
-    color: #333;
-}
-
-.output h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #007bff;
-}
-
-.output p {
-    margin-bottom: 5px;
-    word-wrap: break-word;
-}
-
-/* Responsive */
-@media (max-width: 400px) {
-    .button-group {
-        flex-direction: column;
-        gap: 10px;
-    }
+    background-color: #2980b9;
 }
 
 .button {
-    display: inline-block;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #6c757d; /* Màu xám cho nút Add Domain */
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: #7f8c8d;
 }
 
 .button:hover {
-    background-color: #5a6268;
+    background-color: #6c757d;
 }
 
+/* Hộp thư */
+.email-box {
+    padding: 20px;
+    background-color: #f9fbfd;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    min-height: 200px; /* Tăng chiều cao tối thiểu */
+    max-height: 400px; /* Giới hạn chiều cao, thêm cuộn nếu cần */
+    overflow-y: auto; /* Thêm thanh cuộn dọc */
+    font-size: 16px; /* Tăng kích thước chữ trong hộp thư */
+    color: #2c3e50;
+}
+
+.email-box h2 {
+    font-size: 22px; /* Tăng kích thước tiêu đề email */
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.email-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dfe6e9;
+}
+
+.email-item:last-child {
+    border-bottom: none;
+}
+
+.email-item p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.email-item strong {
+    color: #34495e;
+}
+
+/* Footer */
 .footer {
     text-align: center;
     padding: 20px 0;
-    color: #555;
-    font-size: 14px;
+    color: #7f8c8d;
+    font-size: 16px; /* Tăng kích thước chữ footer */
 }
 
 .footer a {
-    color: #007bff;
+    color: #3498db;
     text-decoration: none;
 }
 
 .footer a:hover {
     text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .container {
+        padding: 20px;
+    }
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .main-title {
+        font-size: 28px;
+    }
 }

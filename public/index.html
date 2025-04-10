@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Email Receiver</h1>
+        <h1 class="main-title">Email Receiver</h1>
         <div class="input-group">
             <label for="email-prefix">Email Prefix:</label>
             <input type="text" id="email-prefix" placeholder="e.g., admin" required>
@@ -22,7 +22,7 @@
             <button id="check-email">Check Email</button>
             <a href="/adddomain.html" class="button">Add Domain</a>
         </div>
-        <div id="email-output" class="output"></div>
+        <div id="email-output" class="email-box"></div>
     </div>
     <footer class="footer">
         <p>Copyright <a href="https://t.me/vin_8379" target="_blank">Dev Lỏ</a></p>
@@ -32,15 +32,14 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || (e.ctrlKey && e.key === 'u')) {
                 e.preventDefault();
+                alert('Tính năng này đã bị vô hiệu hóa để bảo mật!');
             }
         });
-
-        // Chặn context menu (click chuột phải) - tùy chọn
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
-        // Tải danh sách domain khi trang được load
-        fetch('http://51.79.192.91:3000/domains')
+
+        fetch('https://51.79.192.91:3000/domains')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Không thể tải danh sách domain');
@@ -49,7 +48,7 @@
             })
             .then(domains => {
                 const select = document.getElementById('domain-select');
-                select.innerHTML = ''; // Xóa các option cũ (nếu có)
+                select.innerHTML = '';
                 domains.forEach(domain => {
                     const option = document.createElement('option');
                     option.value = domain;
