@@ -12,6 +12,7 @@ let emails = [];
 // Middleware để phục vụ tệp tĩnh
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Tạo server SMTP
 const server = new SMTPServer({
     onData(stream, session, callback) {
         console.log('Receiving email...');
@@ -64,7 +65,37 @@ app.get('/:email', (req, res) => {
     }
 });
 
+// Đường dẫn gốc để phục vụ trang HTML
+app.get('/', (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'index.html');
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('Error sending index.html:', err);
+            res.status(500).send('Internal Server Error');
+        }
+    });
+});
+
 // Chạy server Express
 app.listen(PORT, () => {
     console.log(`Web server is running on port ${PORT}`);
+});
+
+// Endpoint để nhận email từ client
+app.post('/send-email', express.json(), (req, res) => {
+    const { email } = req.body;
+
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Giả lập việc lưu email vào danh sách
+    emails.push({
+        to: email,
+        subject: 'Generated Email',
+        content: 'This is a generated email content.'
+    });
+
+    console.log('Email added:', email);
+    res.status(200).json({ message: 'Email added successfully' });
 });
