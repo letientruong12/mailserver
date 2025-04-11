@@ -28,8 +28,23 @@ async function loadEmails() {
     }
 }
 
-// Gọi hàm tải emails trước khi khởi động server
-loadEmails().then(() => {
+// Tải domains từ file khi khởi động
+async function loadDomains() {
+    try {
+        if (await fsPromises.access('domains.json').then(() => true).catch(() => false)) {
+            const data = await fsPromises.readFile('domains.json', 'utf8');
+            domains = JSON.parse(data);
+            console.log('Đã tải domains từ file:', domains);
+        } else {
+            console.log('File domains.json không tồn tại, sử dụng danh sách mặc định:', domains);
+        }
+    } catch (err) {
+        console.error('Lỗi khi tải domains từ file:', err);
+    }
+}
+
+// Gọi hàm tải dữ liệu trước khi khởi động server
+Promise.all([loadEmails(), loadDomains()]).then(() => {
     // Middleware
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.json());
@@ -63,7 +78,7 @@ loadEmails().then(() => {
                 console.log('Email vừa lưu:', newEmail);
                 console.log('Tổng số email hiện tại:', emails.length);
 
-                // Lưu bất đồng bộ vào file
+                // Lưu emails vào file
                 try {
                     await fsPromises.writeFile('emails.json', JSON.stringify(emails, null, 2));
                     console.log('Đã lưu emails vào file');
@@ -104,14 +119,25 @@ loadEmails().then(() => {
         }
     });
 
-    // Thêm domain mới
-    app.post('/add-domain', (req, res) => {
+    // Thêm domain mới và lưu vào file
+    app.post('/add-domain', async (req, res) => {
         const { domain } = req.body;
         if (!domain || typeof domain !== 'string' || domains.includes(domain)) {
             return res.status(400).json({ message: 'Domain không hợp lệ hoặc đã tồn tại' });
         }
         domains.push(domain);
-        res.json({ message: `Đã thêm domain: ${domain}` });
+        console.log('Domain vừa thêm:', domain);
+        console.log('Danh sách domains hiện tại:', domains);
+
+        // Lưu domains vào file
+        try {
+            await fsPromises.writeFile('domains.json', JSON.stringify(domains, null, 2));
+            console.log('Đã lưu domains vào file');
+            res.json({ message: `Đã thêm domain: ${domain}` });
+        } catch (err) {
+            console.error('Lỗi khi lưu domains vào file:', err);
+            res.status(500).json({ message: 'Lỗi khi lưu domain' });
+        }
     });
 
     app.listen(PORT, () => {
