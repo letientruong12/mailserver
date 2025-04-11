@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const fs = require('fs'); // Đã có trong mã
-
+const fs = require('fs').promises;
 
 // Dữ liệu giả lập
 let emails = [];
