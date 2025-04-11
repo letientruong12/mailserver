@@ -2,30 +2,22 @@ const express = require('express');
 const { SMTPServer } = require('smtp-server');
 const { simpleParser } = require('mailparser');
 const path = require('path');
-const cors = require('cors'); 
+const cors = require('cors');
+const fs = require('fs');              // Đồng bộ
+const fsPromises = require('fs').promises; // Bất đồng bộ
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const fs = require('fs'); // Đã có trong mã
-const fs = require('fs').promises;
 
 // Dữ liệu giả lập
 let emails = [];
 let domains = ['glts.vn']; // Domain mặc định
 
-// Middleware
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-app.use(cors({
-    origin: 'http://51.79.192.91:3000', // Origin của giao diện
-    methods: ['GET', 'POST'],          // Cho phép cả GET và POST
-    allowedHeaders: ['Content-Type']   // Hỗ trợ header cho POST JSON
-}));
-
+// Tải emails từ file khi khởi động
 async function loadEmails() {
     try {
-        if (await fs.access('emails.json').then(() => true).catch(() => false)) {
-            const data = await fs.readFile('emails.json', 'utf8');
+        if (await fsPromises.access('emails.json').then(() => true).catch(() => false)) {
+            const data = await fsPromises.readFile('emails.json', 'utf8');
             emails = JSON.parse(data);
             console.log('Đã tải emails từ file:', emails);
         } else {
@@ -36,8 +28,7 @@ async function loadEmails() {
     }
 }
 
-
-
+// Gọi hàm tải emails trước khi khởi động server
 loadEmails().then(() => {
     // Middleware
     app.use(express.static(path.join(__dirname, 'public')));
@@ -74,7 +65,7 @@ loadEmails().then(() => {
 
                 // Lưu bất đồng bộ vào file
                 try {
-                    await fs.writeFile('emails.json', JSON.stringify(emails, null, 2));
+                    await fsPromises.writeFile('emails.json', JSON.stringify(emails, null, 2));
                     console.log('Đã lưu emails vào file');
                 } catch (err) {
                     console.error('Lỗi khi lưu emails vào file:', err);
@@ -86,12 +77,9 @@ loadEmails().then(() => {
         authOptional: true
     });
 
-
     server.on('error', (err) => {
         console.error('Lỗi SMTP Server:', err.message, 'từ IP:', err.remote);
-        // Không cần làm gì thêm, server sẽ tiếp tục chạy
     });
-
 
     // Chạy server SMTP trên cổng 25
     server.listen(25, () => {
@@ -101,7 +89,6 @@ loadEmails().then(() => {
     app.get('/domains', (req, res) => {
         res.json(domains);
     });
-
 
     // Đường dẫn để lấy email theo địa chỉ
     app.get('/:email', (req, res) => {
@@ -117,9 +104,6 @@ loadEmails().then(() => {
         }
     });
 
-
-
-
     // Thêm domain mới
     app.post('/add-domain', (req, res) => {
         const { domain } = req.body;
@@ -130,9 +114,7 @@ loadEmails().then(() => {
         res.json({ message: `Đã thêm domain: ${domain}` });
     });
 
-
     app.listen(PORT, () => {
         console.log(`Web server đang chạy trên cổng ${PORT}`);
     });
-
 });
